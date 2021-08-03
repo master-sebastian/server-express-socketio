@@ -15,8 +15,8 @@ app.use(express.json())
 require('./routes/web')(app)
 
 
-const server = app.listen(process.env.PORT, ()=>{
-    console.log("Run server in the port http://localhost:"+process.env.PORT)
+const server = app.listen(process.env.PORT || 3000, ()=>{
+    console.log("Run server in the port http://localhost:"+process.env.PORT || 3000)
 })
 
 /**
