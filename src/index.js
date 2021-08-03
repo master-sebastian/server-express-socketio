@@ -13,13 +13,13 @@ app.use(express.json())
 
 
 require('./routes/web')(app)
-app.get('/',(req, res)=>{
-    res.send("<h1>Getting started</h1>")
-})
+
 
 const server = app.listen(process.env.PORT, ()=>{
     console.log("Run server in the port http://localhost:"+process.env.PORT)
 })
 
-
-require('./routes/socket')(server)
+/**
+ * 
+ * require('./routes/socket')(server)
+ */
