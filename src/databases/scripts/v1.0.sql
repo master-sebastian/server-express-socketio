@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.tasks
 (
-    id bigint NOT NULL DEFAULT nextval('tasks_id_seq'::regclass),
+    id serial NOT NULL DEFAULT,
     name character varying(200) COLLATE pg_catalog."default" NOT NULL,
     description character varying(2000) COLLATE pg_catalog."default",
     CONSTRAINT tasks_pkey PRIMARY KEY (id)
