@@ -1,6 +1,6 @@
 const Task = require('../../../databases/models/Task')
 const { body, param ,validationResult  } = require('express-validator');
-
+const verifyToken = require("./../../../middlewares/verifyToken")
 module.exports = (app, prefix) => {
 
     const messageErrorNoNumericIdParam = (value, res) => {
@@ -74,7 +74,28 @@ module.exports = (app, prefix) => {
         }
     )
 
+    app.post(`/${prefix}`,
+        verifyToken,
+        validatorName(),
+        validatorDescription(),
+        (req, res)=>{
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const {name, description} = req.body
+            Task.create({
+                "name": name,
+                "description": description
+            }).then(task => {
+                res.status(201).json(task)
+            })
+        }
+    )
+
     app.put(`/${prefix}/:id`,
+        verifyToken,
         validatorId(),
         validatorName(),
         validatorDescription(),
@@ -105,6 +126,7 @@ module.exports = (app, prefix) => {
     )
 
     app.delete(`/${prefix}/:id`,
+        verifyToken,
         validatorId(),
         (req, res)=>{
             const errors = validationResult(req);
@@ -129,22 +151,5 @@ module.exports = (app, prefix) => {
         }
     )
 
-    app.post(`/${prefix}`, 
-        validatorName(),
-        validatorDescription(),
-        (req, res)=>{
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
-
-            const {name, description} = req.body
-            Task.create({
-                "name": name,
-                "description": description
-            }).then(task => {
-                res.status(201).json(task)
-            })
-        }
-    )
+    
 }

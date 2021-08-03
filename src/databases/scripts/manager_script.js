@@ -11,11 +11,13 @@ for (let element of listRequestScript) {
             console.log(Bright, "Description "+element+": ", Reset, FgBlue, controlVersion[element].description, Reset)
             let sqlString = readFileSync(controlVersion[element].path, 'utf8');
             console.log(FgGreen, "Running script: "+element+" ...", Reset)
-            sequelize.query(sqlString);
+            sequelize.query(controlVersion[element].process(sqlString));
             console.log(FgGreen,"Finished run script: "+element, Reset)
         }catch(error){
             console.log(FgRed,"Error in run script: "+element, Reset)
             console.error(error)
         }
+    }else{
+        console.log(FgRed,"Not exist script: "+element, Reset)
     }
 }

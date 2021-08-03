@@ -1,0 +1,1 @@
+insert into public.users (username,password) values ('<& ?__username__? &>', '<& ?__password__? &>')
