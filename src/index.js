@@ -9,7 +9,10 @@ require('dotenv').config({
 
 const cors = require('cors')
 
-app.use(cors())
+app.use(cors({
+    origin: '*'
+}))
+
 app.use(express.json())
 
 require('./routes/web')(app)
