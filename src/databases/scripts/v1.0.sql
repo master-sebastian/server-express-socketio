@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.tasks
 (
-    id serial NOT NULL DEFAULT,
+    id serial NOT NULL,
     name character varying(200) COLLATE pg_catalog."default" NOT NULL,
     description character varying(2000) COLLATE pg_catalog."default",
     CONSTRAINT tasks_pkey PRIMARY KEY (id)
