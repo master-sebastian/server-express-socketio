@@ -3,7 +3,8 @@ module.exports = (app)=>{
         res.json(
             {
                 message: "<h1>Getting started</h1>",
-                message_p: process.env.PORT
+                message_name: process.env.NAME_APP,
+
             }
         )
     })
