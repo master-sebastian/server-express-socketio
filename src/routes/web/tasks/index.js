@@ -1,8 +1,8 @@
 const Task = require('../../../databases/models/Task')
 const { body, param ,validationResult  } = require('express-validator');
 const verifyToken = require("./../../../middlewares/verifyToken")
+const storage = require('./../../storage')
 module.exports = (app, prefix) => {
-
     const messageErrorNoNumericIdParam = (value, res) => {
         return res.status(400).json(
             {
@@ -73,24 +73,52 @@ module.exports = (app, prefix) => {
             })
         }
     )
-
     app.post(`/${prefix}`,
-        verifyToken,
-        validatorName(),
-        validatorDescription(),
-        (req, res)=>{
+    verifyToken,
+    validatorName(),
+    validatorDescription(),
+    (req, res)=>{
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
 
-            const {name, description} = req.body
+            const {name, description, file_task} = req.body
+            
             Task.create({
                 "name": name,
                 "description": description
             }).then(task => {
                 res.status(201).json(task)
             })
+        }
+    )
+    app.post(`/${prefix}/file`,
+        verifyToken,
+        storage.folder.private.storage1.obj.single("file_task"),
+    (req, res)=>{
+            const {file_task} = req.body
+            console.log(file_task)
+            res.status(201).json({
+                message: "Saved file"
+            })
+        }
+    )
+
+
+    app.get(`/${prefix}/file/download/:filename`,
+        verifyToken,
+    (req, res)=>{
+            let {filename} = req.params
+            try {
+                const fs = require('fs')
+                const pathFile = storage.folder.private.storage1.path+filename
+                if (fs.existsSync(pathFile)) {
+                    res.download(pathFile,filename)
+                }
+            } catch(err) {
+                console.error(err)
+            }
         }
     )
 

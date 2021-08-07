@@ -14,8 +14,12 @@ app.use(cors({
 }))
 
 app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
-require('./routes/web')(app)
+app.use(express.static('public'));
+
+
+require('./routes/web')(app, require('./routes/storage'))
 
 const server = app.listen(process.env.PORT || 3000, ()=>{
     console.log("Run server in the port http://localhost:"+process.env.PORT || 3000)
@@ -23,7 +27,7 @@ const server = app.listen(process.env.PORT || 3000, ()=>{
     .then(()=>{
         console.log("Se conecto a la base de datos")
     })
-    .catch(()=>{
+    .catch((error)=>{
         console.log("Se ha producido un error", error)
     })
 })

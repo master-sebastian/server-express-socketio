@@ -13,7 +13,6 @@ module.exports = (req, res, next) =>{
                 if(err){
                     return res.sendStatus(403)
                 }
-                console.log(decoded)
                 next()
             });
         }else{
